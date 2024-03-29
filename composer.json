@@ -1,0 +1,40 @@
+{
+    "name": "uupt/corps",
+    "alias": "组织架构",
+    "description": "组织架构插件，包含钉钉、飞书、企业微信同步等",
+    "type": "library",
+    "version": "1.0.0",
+    "keywords": [
+        "owl-admin",
+        "extension"
+    ],
+    "homepage": "https://github.com/uupt/corps",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "your name",
+            "email": "your email"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "slowlyo/owl-admin": "*",
+        "slowlyo/owl-dict": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "UUPT\\Corp\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "owl-admin": "UUPT\\Corp\\CorpsServiceProvider",
+        "laravel": {
+            "providers": [
+                "UUPT\\Corp\\CorpsServiceProvider"
+            ]
+        }
+    }
+}
