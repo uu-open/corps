@@ -2,10 +2,10 @@
 
 namespace UUPT\Corp\Services;
 
-use App\Jobs\TaskSyncDepartment;
-use App\Jobs\TaskSyncUser;
 use Illuminate\Support\Facades\Http;
 use UUPT\Corp\CorpsServiceProvider;
+use UUPT\Corp\Jobs\TaskSyncDepartment;
+use UUPT\Corp\Jobs\TaskSyncUser;
 
 class DingService extends SyncService
 {

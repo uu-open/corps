@@ -2,11 +2,11 @@
 
 namespace UUPT\Corp\Http\Controllers;
 
-use App\Jobs\TaskSyncUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use UUPT\Corp\CorpsServiceProvider;
 use UUPT\Corp\Events\DingNotify\DefaultEvent;
+use UUPT\Corp\Jobs\TaskSyncUser;
 use UUPT\Corp\Library\DingCrypt;
 use UUPT\Corp\Services\DingService;
 
