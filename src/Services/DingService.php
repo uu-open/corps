@@ -66,11 +66,11 @@ class DingService extends SyncService
 
     public function get($url, $params = [])
     {
-        $params['access_token'] = $this->getAccessToken(CorpsServiceProvider::setting('client_id'), CorpsServiceProvider::setting('client_secret'));
+        $params['access_token'] = self::getAccessToken(CorpsServiceProvider::setting('client_id'), CorpsServiceProvider::setting('client_secret'));
         return Http::get($url, $params)->json();
     }
 
-    private function getAccessToken($client_id, $client_secret)
+    public static function getAccessToken($client_id, $client_secret)
     {
         # 请求钉钉api接口，获取token 并且缓存7200 秒
         return cache()->remember($client_id . ':ding_access_token', 7200, function () use ($client_id, $client_secret) {

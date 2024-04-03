@@ -4,7 +4,9 @@ namespace UUPT\Corp\Http\Controllers;
 
 use App\Jobs\TaskSyncUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use UUPT\Corp\CorpsServiceProvider;
+use UUPT\Corp\Events\DingNotify\DefaultEvent;
 use UUPT\Corp\Library\DingCrypt;
 use UUPT\Corp\Services\DingService;
 
@@ -30,10 +32,6 @@ class CorpNotifyController
         $client_id = CorpsServiceProvider::setting('client_id');
         $crypt = new DingCrypt(CorpsServiceProvider::setting('token'), CorpsServiceProvider::setting('aes_key'), $client_id);
         $encryData = $crypt->decryptMsg($signature, $timeStamp, $nonce, $encrypt);
-//
-        $file = storage_path('data/' . time() . '.json');
-        file_put_contents($file, json_encode($encryData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-
         switch ($encryData['EventType'] ?? '') {
             case 'check_url':
                 break;
@@ -43,8 +41,15 @@ class CorpNotifyController
                 }
                 break;
             default:
-                #保存到本地data/xxx.json 做为模拟数据
-
+                $event = '\\UUPT\\Corp\\Events\\DingNotify\\' . Str::studly($encryData['EventType']) . 'Event';
+                if (class_exists($event)) {
+                    event(new $event($encryData));
+                }else{
+                    # 不存在就抛默认事件，用于兜底
+                    DefaultEvent::dispatch($encryData);
+                }
+//                $file = storage_path('data/def-' . ($encryData['EventType'] ?? '') . '-' . time() . '.json');
+//                file_put_contents($file, json_encode($encryData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
                 break;
         }
         return $crypt->EncryptMsg('success', $client_id);

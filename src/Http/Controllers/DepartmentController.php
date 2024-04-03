@@ -72,7 +72,7 @@ class DepartmentController extends AdminController
                 admin_corp_amis()->employeeForm('leader_user_id', '部门负责人')->static(),
                 amis()->TableColumn('type', '部门类型')->type('map')->map(admin_dict()->getMapValues('dept_srouce')),
                 amis()->TableColumn('order', '排序')->sortable(),
-                amis()->TableColumn('state', '状态0 禁用 1启用'),
+                amis()->TableColumn('state', '状态')->type('status'),
                 amis()->TableColumn('created_at', __('admin.created_at'))->set('type', 'datetime')->sortable(),
                 amis()->TableColumn('updated_at', __('admin.updated_at'))->set('type', 'datetime')->sortable(),
                 $this->rowActions(true, 'lg')

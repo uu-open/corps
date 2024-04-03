@@ -6,15 +6,11 @@ use Slowlyo\OwlAdmin\Renderers\TextControl;
 use Slowlyo\OwlAdmin\Extend\ServiceProvider;
 use Slowlyo\OwlDict\AdminDict;
 use Slowlyo\OwlDict\Models\AdminDict as AdminDictModel;
+use Illuminate\Support\Facades\Route;
+use UUPT\Corp\Http\Controllers\CorpNotifyController;
 
 class CorpsServiceProvider extends ServiceProvider
 {
-    protected $exceptRoutes = [
-        'auth' => [
-            'corp/notify'
-        ]
-    ];
-
     protected $menu = [
         [
             'parent' => 0,
@@ -50,8 +46,6 @@ class CorpsServiceProvider extends ServiceProvider
     {
         # 注册字典数据
         $this->registerDict();
-
-
         $this->publishable();
         $this->runMigrations();
     }
@@ -59,8 +53,10 @@ class CorpsServiceProvider extends ServiceProvider
     public function register()
     {
         parent::register();
-
         $this->app->singleton('admin.corp.amis', AdminCorpAmis::class);
+
+        # 注册异步通知路由
+        Route::any('/api/corp/dingtalk/notify', [CorpNotifyController::class, 'notify']);
     }
 
     public function settingForm()
@@ -144,4 +140,5 @@ class CorpsServiceProvider extends ServiceProvider
             }
         }
     }
+
 }
